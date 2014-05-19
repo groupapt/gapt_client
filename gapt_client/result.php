@@ -1,10 +1,10 @@
 <?php
 
-error_reporting(E_ALL);
-ini_set('display_errors',1);
-session_start();
-include_once 'ApiCaller.php';
- 
+	error_reporting(E_ALL);
+	ini_set('display_errors',1);
+	session_start();
+	include_once 'ApiCaller.php';
+	 
     $apicaller = new ApiCaller('http://localhost:5000/code/api/v1.0/cases/date/json/');
     $cases = $apicaller->sendRequest('2014-03-10','date');
 
@@ -12,15 +12,15 @@ include_once 'ApiCaller.php';
 <!DOCTYPE html>
 <html>
 <head>
-  <title>CODe</title>
-	<link rel="stylesheet" href="style/bootstrap-select.css" type="text/css" />
-	<link rel="stylesheet" href="style/bootstrap-select.min" type="text/css" />
+    <title>CODe</title>
+    <link rel="stylesheet" href="style/bootstrap-select.css" type="text/css" />
+    <link rel="stylesheet" href="style/bootstrap-select.min" type="text/css" />
     <link rel="stylesheet" href="style.css" type="text/css" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css" type="text/css" />
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.3/css/base/jquery-ui.css" type="text/css" />
     <style>
-.form-control{width:30%;}
+    .form-control{width:30%;}
     </style>
 </head>
 <body>
@@ -33,19 +33,18 @@ include_once 'ApiCaller.php';
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="index.php">CODe</a>
-         </div>  
+        </div>  
         <div class ="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="#">Home</a></li>
                 <li><a href="logout.php">Logout</a></li>
             </ul>
         </div>
-    </div>  
-	<div class="container">
-		<div class="row">
-							
-			<div class="col-xs-8 col-xs-offset-2">
-			<form name="input" action="search.php" method="get">
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-8 col-xs-offset-2">
+            <form name="input" action="search.php" method="get">
 				<div class="input-group">
 					<div class="input-group-btn search-panel">
 						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -116,18 +115,7 @@ include_once 'ApiCaller.php';
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
-        
-        <script>
-			$(document).ready(function(e){
-    $('.search-panel .dropdown-menu').find('a').click(function(e) {
-		e.preventDefault();
-		var param = $(this).attr("href").replace("#","");
-		var concept = $(this).text();
-		$('.search-panel span#search_concept').text(concept);
-		$('.input-group #search_param').val(param);
-	});
-});
-        </script>    
+        <script src="result.js"></script>    
     </body>
 </html>    
  
