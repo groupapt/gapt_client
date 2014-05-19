@@ -86,23 +86,25 @@
 		
 					<?php
 						foreach($cases['response'] as $case_obj){
-						if(isset($case_obj['pdf'])){
-							$link = "http://www.justiceservices.gov.mt/courtservices/Judgements/" . $case_obj['pdf'];
-							}else $link = "#"
+							if(isset($case_obj['pdf'])){
+								$link = "http://www.justiceservices.gov.mt/courtservices/Judgements/" . $case_obj['pdf'];
+							} else {
+								$link = "#";
+							}
 					?>
 
 						<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
 							<div class="product-chooser-item selected">
 								<div class="col-xs-8 col-sm-8 col-md-12 col-lg-12">
-									<span class="title"><?php echo $case_obj['reference']?></span>
-									<b>Date: </b><span class="description"><?php echo $case_obj['date']?></span><br>
-									<b>Court: </b><span class="description"><?php echo $case_obj['court']?></span><br>
-									<b>Judge: </b><span class="description"><?php echo $case_obj['judge']?></span><br>
-									<b>Prosecutor: </b><span class="description"><?php echo $case_obj['prosecutor']?></span><br>
-									<b>Defendant: </b><span class="description"><?php echo $case_obj['defendant']?></span><br>
+									<span class="title"><?php echo $case_obj['reference']; ?></span>
+									<b>Date: </b><span class="description"><?php echo $case_obj['date']; ?></span><br>
+									<b>Court: </b><span class="description"><?php echo $case_obj['court']; ?></span><br>
+									<b>Judge: </b><span class="description"><?php echo $case_obj['judge']; ?></span><br>
+									<b>Prosecutor: </b><span class="description"><?php echo $case_obj['prosecutor']; ?></span><br>
+									<b>Defendant: </b><span class="description"><?php echo $case_obj['defendant']; ?></span><br>
 									<br><br>
 										
-										<a href = <?php echo $link?>> <img src = "pdf-download.png" height = "50px" width = "200px"/></a>
+									<a href="<?php echo $link; ?>" <img src="pdf-download.png" height="50px" width="200px"/></a>
 								
 									<input type="radio" name="product" value="mobile_desktop" checked="checked">
 								</div>
