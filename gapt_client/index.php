@@ -5,7 +5,7 @@
 	session_start();
 	include_once 'ApiCaller.php';
 	 
-    $apicaller = new ApiCaller('http://localhost:5000/code/api/v1.0/cases/date/json/');
+    $apicaller = new ApiCaller('http://localhost:5000/api/0.1/json/cases/date/2011-03-14');
     $cases = $apicaller->sendRequest('2014-03-10','date');
 
 ?>
@@ -86,11 +86,11 @@
 		
 					<?php
 						foreach($cases['response'] as $case_obj){
-							if(isset($case_obj['pdf'])){
-								$link = "http://www.justiceservices.gov.mt/courtservices/Judgements/" . $case_obj['pdf'];
-							} else {
-								$link = "#";
-							}
+						if(isset($case_obj['pdf'])){
+							$link = "http://www.justiceservices.gov.mt/courtservices/Judgements/" . $case_obj['pdf'];
+						} else {
+							$link = "#";
+						}
 					?>
 
 						<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
