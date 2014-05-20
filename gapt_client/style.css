@@ -3,10 +3,6 @@ div.clear
     clear: both;
 }
 
-div.product-chooser{
-    
-}
-
 div.product-chooser.disabled div.product-chooser-item
 {
 	zoom: 1;

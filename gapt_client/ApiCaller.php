@@ -18,14 +18,6 @@ class ApiCaller
         //create the params array, which will
         //be the POST parameters
         $params = explode(' ',$search_text);
-		if($type == 'date')
-		{
-			$query_string = '?date='.$params[0];
-		}
-		else if($type == 'judge')
-		{
-			$query_string = '?date='.$params[0];
-		}
 
         //initialize and setup the curl handler
         $ch = curl_init();

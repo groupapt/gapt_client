@@ -2,8 +2,7 @@
 
 	error_reporting(E_ALL);
 	ini_set('display_errors',1);
-	session_start();
-	include_once 'ApiCaller.php';
+	require_once 'ApiCaller.php';
 	 
     $apicaller = new ApiCaller('http://localhost:5000/api/0.1/json/cases/date/2011-03-14');
     $cases = $apicaller->sendRequest('2014-03-10','date');
@@ -85,12 +84,12 @@
 			<div class="row form-group product-chooser">
 		
 					<?php
-						foreach($cases['response'] as $case_obj){
-						if(isset($case_obj['pdf'])){
-							$link = "http://www.justiceservices.gov.mt/courtservices/Judgements/" . $case_obj['pdf'];
-						} else {
-							$link = "#";
-						}
+						foreach($cases['response'] as $case_obj) {
+							if(isset($case_obj['pdf'])){
+								$link = "http://www.justiceservices.gov.mt/courtservices/Judgements/" . $case_obj['pdf'];
+							} else {
+								$link = "#";
+							}
 					?>
 
 						<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
@@ -111,7 +110,7 @@
 								<div class="clear"></div>
 							</div>
 						</div>
-					<?php  }?>
+					<?php } ?>
 			</div>
 		</div>		
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
