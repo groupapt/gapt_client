@@ -12,23 +12,19 @@ class ApiCaller
     //send the request to the API server
     //also encrypts the request, then checks
     //if the results are valid
-    public function sendRequest($search_text, $type)
+    public function sendRequest()
     {
-	
-        //create the params array, which will
-        //be the POST parameters
-        $params = explode(' ',$search_text);
 
         //initialize and setup the curl handler
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $this->_api_url. $query_string);
+        curl_setopt($ch, CURLOPT_URL, $this->_api_url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
  
         //execute the request
         $result = curl_exec($ch);
         
         //json_decode the result
-        $result = @json_decode($result,true);
+        $result = @json_decode($result, true);
          
         //if everything went great, return the data
         return $result;
