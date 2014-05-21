@@ -10,67 +10,67 @@
 ?>
 <!DOCTYPE html>
 <html>
-<head>
-    <title>CODe</title>
-    <link rel="stylesheet" href="style/bootstrap-select.css" type="text/css" />
-    <link rel="stylesheet" href="style/bootstrap-select.min" type="text/css" />
-    <link rel="stylesheet" href="style.css" type="text/css" />
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css" type="text/css" />
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.3/css/base/jquery-ui.css" type="text/css" />
-    <style>
-    .form-control{width:30%;}
-    </style>
-</head>
-<body>
-    <div class ="navbar navbar-default" role="navigation" >
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="index.php">CODe</a>
-        </div>  
-        <div class ="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Home</a></li>
-                <li><a href="logout.php">Logout</a></li>
-            </ul>
-        </div>
-    </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-8 col-xs-offset-2">
-            <form name="input" action="search.php" method="get">
-				<div class="input-group">
-					<div class="input-group-btn search-panel">
-						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-						<span id="search_concept">Filter by</span> <span class="caret"></span>
-						</button>
-					<ul class="dropdown-menu" role="menu">
-					  <li><a href="#date">Date</a></li>
-					  <li><a href="#ref">Ref</a></li>
-					  <li><a href="#party">Party</a></li>
-					  <li><a href="#judge">Judge</a></li>
-					</ul>
+	<head>
+	    <title>CODe</title>
+	    <link rel="stylesheet" href="style/bootstrap-select.css" type="text/css" />
+	    <link rel="stylesheet" href="style/bootstrap-select.min" type="text/css" />
+	    <link rel="stylesheet" href="style.css" type="text/css" />
+	    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css" type="text/css" />
+	    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" type="text/css" />
+	    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.3/css/base/jquery-ui.css" type="text/css" />
+	    <style>
+	    .form-control{width:30%;}
+	    </style>
+	</head>
+	<body>
+	    <div class ="navbar navbar-default" role="navigation" >
+	        <div class="navbar-header">
+	            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+	                <span class="sr-only">Toggle navigation</span>
+	                <span class="icon-bar"></span>
+	                <span class="icon-bar"></span>
+	                <span class="icon-bar"></span>
+	            </button>
+	            <a class="navbar-brand" href="index.php">CODe</a>
+	        </div>  
+	        <div class ="navbar-collapse collapse">
+	            <ul class="nav navbar-nav">
+	                <li class="active"><a href="#">Home</a></li>
+	                <li><a href="logout.php">Logout</a></li>
+	            </ul>
+	        </div>
+	    </div>
+	    <div class="container">
+	        <div class="row">
+	            <div class="col-xs-8 col-xs-offset-2">
+	            <form name="input" action="index.php" method="get">
+					<div class="input-group">
+						<div class="input-group-btn search-panel">
+							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+							<span id="search_concept">Filter by</span> <span class="caret"></span>
+							</button>
+						<ul class="dropdown-menu" role="menu">
+						  <li><a href="#date">Date</a></li>
+						  <li><a href="#ref">Ref</a></li>
+						  <li><a href="#party">Party</a></li>
+						  <li><a href="#judge">Judge</a></li>
+						</ul>
+						</div>
+						<input type="hidden" name="search_param" value="all" id="search_param" />         
+						<input type="text" id="search_bar" class="form-control" name="param" placeholder="Search term..." />
+						<span class="input-group-btn">
+							<button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+						</span
 					</div>
-					<input type="hidden" name="search_param" value="all" id="search_param">         
-					<input type="text" class="form-control" name="param" placeholder="Search term...">
-					<span class="input-group-btn">
-						<button  class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
-					</span
+				</form>
 				</div>
-			</form>
 			</div>
 		</div>
-	</div>
-	
-    <div class="container theme-showcase">
-    <div class="page-header">
-          <h1>Result</h1>
-    </div>
+		
+	    <div class="container theme-showcase">
+	    <div class="page-header">
+	          <h1>Result</h1>
+	    </div>
 
         <?php if(count($cases)===0): ?>
             <div class="row">
@@ -116,7 +116,7 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
-        <script src="result.js"></script>    
+        <script src="main.js"></script>    
     </body>
 </html>    
  
