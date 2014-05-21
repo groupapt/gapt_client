@@ -3,6 +3,8 @@ div.clear
     clear: both;
 }
 
+.form-control { width:30%; }
+
 div.product-chooser.disabled div.product-chooser-item
 {
 	zoom: 1;

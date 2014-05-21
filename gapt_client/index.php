@@ -3,8 +3,9 @@
 	error_reporting(E_ALL);
 	ini_set('display_errors',1);
 	require_once 'ApiCaller.php';
-	 
-    $apicaller = new ApiCaller('http://localhost:5000/api/0.1/json/cases/date/2011-03-14');
+	
+	$search_param = strip_tags($_GET['search_param']);
+    $apicaller = new ApiCaller("http://localhost:5000/api/0.1/json/$search_param}");
     $cases = $apicaller->sendRequest('2014-03-10','date');
 
 ?>
@@ -12,8 +13,8 @@
 <html>
 	<head>
 	    <title>CODe</title>
-	    <link rel="stylesheet" href="style/bootstrap-select.css" type="text/css" />
-	    <link rel="stylesheet" href="style/bootstrap-select.min" type="text/css" />
+	    <meta charset="utf-8" />
+	    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.5.4/bootstrap-select.min.css" type="text/css" />
 	    <link rel="stylesheet" href="style.css" type="text/css" />
 	    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css" type="text/css" />
 	    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" type="text/css" />
@@ -116,6 +117,7 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.5.4/bootstrap-select.min.js"></script>
         <script src="main.js"></script>    
     </body>
 </html>    
