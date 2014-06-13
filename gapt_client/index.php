@@ -82,6 +82,11 @@
         <div class="container">
 			<h2>Normal</h2>
 			<div class="row form-group product-chooser">
+				<div class="visualContainer">
+					<svg id="visual">
+
+					</svg>
+				</div>
 		
 					<?php
 						foreach($cases as $case_obj) {
@@ -117,7 +122,8 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.5.4/bootstrap-select.min.js"></script>
-        <script src="main.js"></script>    
+        <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.8/d3.min.js"></script>
+        <script src="base.js"></script>    
     </body>
 </html>    
  
