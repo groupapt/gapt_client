@@ -62,6 +62,11 @@ $(document).ready(function() {
 		return '//localhost:5000/api/0.1/json/' + url;
 	}
 
+	function fireVisuals() {
+		$.getJSON(genURL(), null, showVisuals);
+	}
+
+
 	//visualisation fuctions
 	function Case(caseObj) {
 		this.reference = caseObj.reference;
@@ -77,14 +82,14 @@ $(document).ready(function() {
 			this.prosecutor + ' vs ' + this.defendant;
 	};
 
-	function fireVisuals() {
-		$.getJSON(genURL(), null, showVisuals);
-	}
-
 	function showVisuals(data) {
-		if (data.response.length === 0 && nameFirst) {
-			nameFirst = false;
-			fireVisuals();
+		$('h3').hide();
+		if (data.response.length === 0) {
+			$('h3').show();
+			if (nameFirst && actions[param].args) {
+				nameFirst = false;
+				fireVisuals();
+			}
 		}
 
 		nextX = nextY = 0;
@@ -93,6 +98,10 @@ $(document).ready(function() {
 		data.response.forEach(processcaseObj);
 		judges.forEach(renderJudgeNode);
 		courts.forEach(renderCourtNode);
+
+		if (!nameFirst) {
+			nameFirst = true;
+		}
 	}
 
 	function processcaseObj(caseObj) {
