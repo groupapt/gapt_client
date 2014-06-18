@@ -3,6 +3,7 @@ $(document).ready(function() {
 
 	//request variables
 	var param = 'date',
+		nameFirst = true,
 		searchBar = $('#search_bar'),
 		actions = {
 			ref: {
@@ -26,6 +27,7 @@ $(document).ready(function() {
 		},
 
 		//data visualisation variables
+		nextX, nextY,
 		cases = [],
 		judges = [],
 		courts = [];
@@ -38,7 +40,7 @@ $(document).ready(function() {
 		searchBar.attr('placeholder', actions[param].placeholder);
 	}
 
-	function paramStr(nameFirst, inputStr) {
+	function paramStr(inputStr) {
 		var parts = [],
 			dividingPos = inputStr.indexOf(' ');
 		parts[0] = inputStr.substring(0, dividingPos);
@@ -48,11 +50,11 @@ $(document).ready(function() {
 			('surname=' + parts[0] + '&name=' + parts[1]);
 	}
 
-	function genURL(nameFirst) {
+	function genURL() {
 		var url = actions[param].url;
 
 		if (actions[param].args) {
-			url += paramStr(nameFirst, searchBar.val());
+			url += paramStr(searchBar.val());
 		} else {
 			url += searchBar.val();
 		}
@@ -61,49 +63,73 @@ $(document).ready(function() {
 	}
 
 	//visualisation fuctions
-	function Case(case) {
-		this.reference = case.reference;
-		this.date = case.date;
-		this.defendant = case.defendant;
-		this.prosecutor = case.prosecutor;
-		this.court = case.court_name;
-		this.judge = case.judge;
+	function Case(caseObj) {
+		this.reference = caseObj.reference;
+		this.date = caseObj.date;
+		this.defendant = caseObj.defendant;
+		this.prosecutor = caseObj.prosecutor;
+		this.court = caseObj.court_name;
+		this.judge = caseObj.judge;
 	}
 
+	Case.prototype.toString = function toString() {
+		return this.reference + ', ' + this.date + ', ' +
+			this.prosecutor + ' vs ' + this.defendant;
+	};
+
 	function fireVisuals() {
-		d3.json(genURL(true), showVisuals);
+		$.getJSON(genURL(), null, showVisuals);
 	}
 
 	function showVisuals(data) {
-		data.forEach(processCase);
+		if (data.response.length === 0 && nameFirst) {
+			nameFirst = false;
+			fireVisuals();
+		}
+
+		nextX = nextY = 0;
+		$('#visual').children().remove('*');
+
+		data.response.forEach(processcaseObj);
 		judges.forEach(renderJudgeNode);
 		courts.forEach(renderCourtNode);
 	}
 
-	function processCase(case) {
-		var caseObj = new Case(case);
+	function processcaseObj(caseObj) {
+		var caseObj = new Case(caseObj);
 		cases.push(caseObj);
 		renderCaseNode(caseObj);
 
-		if (courts.indexOf(case.court_name) === -1) {
-			courts.push(case.court_name);
+		if (courts.indexOf(caseObj.court_name) === -1) {
+			courts.push(caseObj.court_name);
 		}
 
-		if (judges.indexOf(case.judge) === -1) {
-			judges.push(case.judge);
+		if (judges.indexOf(caseObj.judge) === -1) {
+			judges.push(caseObj.judge);
 		}
 	}
 
-	function renderCaseNode(case) {
-		var cirle = d3.select(document.createElement('circle'));
+	function renderCaseNode(caseObj) {
+		var svgEl = $('#visual'),
+			circle = $(document.createElement('svg:circle')),
+			text = $(document.createElement('svg:text'));
 
 		//Append circle
-		circle.attr('x', 0);
-		circle.attr('y', 0);
-		d3.select('#visual').append(circle);
+		circle.attr('cx', nextX + 30);
+		circle.attr('cy', nextY);
+		circle.attr('r', 20);
+		svgEl.append(circle);
 
 		//Append properties
+		text.attr('x', nextX + 60);
+		text.attr('y', nextY - 50);
+		text.text(caseObj);
+		svgEl.append(text);
 
+		nextX += 150;
+		if (nextX >= svgEl.attr('clientWidth')) {
+			nextY += 50;
+		}
 	}
 
 	function renderJudgeNode(judge) {
