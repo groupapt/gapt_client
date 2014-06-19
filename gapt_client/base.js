@@ -77,6 +77,8 @@ $(document).ready(function() {
 		this.prosecutor = caseObj.prosecutor;
 		this.court = caseObj.court_name;
 		this.judge = caseObj.judge;
+
+		this.node = null;
 	}
 
 	Case.prototype.toString = function toString() {
@@ -97,7 +99,7 @@ $(document).ready(function() {
 		nextX = nextY = 0;
 		$('#visual').children().remove('*');
 
-		data.response.forEach(processcaseObj);
+		data.response.forEach(processCase);
 		judges.forEach(renderJudgeNode);
 		courts.forEach(renderCourtNode);
 
@@ -106,7 +108,7 @@ $(document).ready(function() {
 		}
 	}
 
-	function processcaseObj(caseObj) {
+	function processCase(caseObj) {
 		var caseObj = new Case(caseObj);
 		cases.push(caseObj);
 		renderCaseNode(caseObj);
@@ -122,18 +124,18 @@ $(document).ready(function() {
 
 	function renderCaseNode(caseObj) {
 		var svgEl = $('#visual'),
-			circle = $(document.createElementNS('http://www.w3.org/2000/svg', 'circle')),
-			text = $(document.createElementNS('http://www.w3.org/2000/svg', 'text'));
+			circle = createSVGEl('circle'),
+			text = createSVGEl('text');
 
 		//Append circle
 		circle.attr('cx', nextX + 30);
-		circle.attr('cy', nextY);
+		circle.attr('cy', nextY + 30);
 		circle.attr('r', 20);
 		svgEl.append(circle);
 
 		//Append properties
 		text.attr('x', nextX + 60);
-		text.attr('y', nextY - 50);
+		text.attr('y', nextY);
 		text.text(caseObj);
 		svgEl.append(text);
 
@@ -144,20 +146,54 @@ $(document).ready(function() {
 		}
 	}
 
-	function renderJudgeNode(judge) {
-		var svgEl = $('#visual'),
-			circle = $(document.createElementNS('http://www.w3.org/2000/svg', 'circle')),
-			text = $(document.createElementNS('http://www.w3.org/2000/svg', 'text'));
+	function renderRelatedNode(type, value) {
+		var comparator,
+			svgEl = $('#visual'),
+			circle = createSVGEl('circle'),
+			text = createSVGEl('text');
 
 		circle.attr('cx', nextX);
 		circle.attr('cy', nextY);
 		svgEl.append(circle);
+
+		if (type === 'judge') {
+			comparator = 'judge';
+		} else if (type === 'court') {
+			comparator = 'court';
+		}
+
+		cases.forEach(function drawLine(caseObj) {
+			if (caseObj[comparator] === value) {
+				var line = createSVGEl('line');
+				
+				line.attr('x1', nextX);
+				line.attr('y1', nextY);
+
+				line.attr('x2', caseObj.node.attr('cx'));
+				line.attr('y2', caseObj.node.attr('cy'));
+
+				line.attr('stroke-width', 2);
+
+				svgEl.append(line);
+			}
+		});
+	}
+
+	function renderJudgeNode(judge) {
+		renderRelatedNode('judge', judge);
 	}
 
 	function renderCourtNode(court) {
-
+		renderRelatedNode('court', court);
 	}
 
+	//Element-creation util
+	//Kudos to Brian Birtles - birtles on IRC
+	function createSVGEl(tagName) {
+		return $(document.createElementNS('http://www.w3.org/2000/svg', tagName));
+	}
+
+	//UI handlers
 	$('.search-panel .dropdown-menu').find('a').click(processSelection);
 	searchBar.keyup(fireVisuals);
 });
