@@ -38,6 +38,8 @@ $(document).ready(function() {
 		param = $(this).attr('href').replace('#', ''),
 		
 		searchBar.attr('placeholder', actions[param].placeholder);
+
+		fireVisuals();
 	}
 
 	function paramStr(inputStr) {
@@ -59,7 +61,7 @@ $(document).ready(function() {
 			url += searchBar.val();
 		}
 
-		return '//localhost:5000/api/0.1/json/' + url;
+		return 'http://localhost:5000/api/0.1/json/' + url;
 	}
 
 	function fireVisuals() {
@@ -120,8 +122,8 @@ $(document).ready(function() {
 
 	function renderCaseNode(caseObj) {
 		var svgEl = $('#visual'),
-			circle = $(document.createElement('svg:circle')),
-			text = $(document.createElement('svg:text'));
+			circle = $(document.createElementNS('http://www.w3.org/2000/svg', 'circle')),
+			text = $(document.createElementNS('http://www.w3.org/2000/svg', 'text'));
 
 		//Append circle
 		circle.attr('cx', nextX + 30);
@@ -138,11 +140,18 @@ $(document).ready(function() {
 		nextX += 150;
 		if (nextX >= svgEl.attr('clientWidth')) {
 			nextY += 50;
+			nextX = 0;
 		}
 	}
 
 	function renderJudgeNode(judge) {
+		var svgEl = $('#visual'),
+			circle = $(document.createElementNS('http://www.w3.org/2000/svg', 'circle')),
+			text = $(document.createElementNS('http://www.w3.org/2000/svg', 'text'));
 
+		circle.attr('cx', nextX);
+		circle.attr('cy', nextY);
+		svgEl.append(circle);
 	}
 
 	function renderCourtNode(court) {
