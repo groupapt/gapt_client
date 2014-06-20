@@ -149,7 +149,7 @@ $(document).ready(function () {
 	function processCase(caseObj) {
 		var caseObj = new Case(caseObj);
 		cases.push(caseObj);
-		renderCaseNode(caseObj);
+		renderCaseNode(caseObj);console.log(caseObj.court_name);
 
 		if (caseObj.court_name !== undefined && courts.indexOf(caseObj.court_name) === -1) {
 			courts.push(caseObj.court_name);
@@ -235,8 +235,8 @@ $(document).ready(function () {
 
 	function progressPositions(svgEl) {
 		nextX += 400;
-		if (nextX > svgEl.attr('clientWidth')) {
-			nextY += 50;
+		if (nextX >= svgEl.innerWidth()) {
+			nextY += 100;
 			nextX = 0;
 		}
 	}
