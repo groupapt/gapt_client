@@ -1,7 +1,8 @@
-$(document).ready(function() {
+$(document).ready(function () {
 	'use strict';
 
-	//request variables
+
+	//Request variables
 	var param = 'date',
 		nameFirst = true,
 		searchBar = $('#search_bar'),
@@ -26,13 +27,15 @@ $(document).ready(function() {
 			}
 		},
 
-		//data visualisation variables
+
+		//Data visualisation variables
 		nextX, nextY,
 		cases = [],
 		judges = [],
 		courts = [];
 
-	//request functions
+
+	//Request functions
 	function processSelection(evt) {
 		evt.preventDefault();
 		param = $(this).attr('href').replace('#', ''),
@@ -69,7 +72,7 @@ $(document).ready(function() {
 	}
 
 
-	//visualisation fuctions
+	//Visualisation fuctions
 	function Case(caseObj) {
 		this.reference = caseObj.reference;
 		this.date = caseObj.date;
@@ -77,13 +80,44 @@ $(document).ready(function() {
 		this.prosecutor = caseObj.prosecutor;
 		this.court = caseObj.court_name;
 		this.judge = caseObj.judge;
+		this.keywords = caseObj.keywords;
 
 		this.node = null;
 	}
 
-	Case.prototype.toString = function toString() {
-		return this.reference + ', ' + this.date + ', ' +
-			this.prosecutor + ' vs ' + this.defendant;
+	Case.prototype.attachTextNodes = function attachTextNodes(svgEl) {
+		var referenceText = createSVGEl('text'),
+			dateText = createSVGEl('text'),
+			defendantText = createSVGEl('text'),
+			prosecutorText = createSVGEl('text');
+			//keywordsText = createSVGEl('text');
+
+		referenceText.attr('x', nextX + 70)
+			.attr('y', nextY + 20)
+			.text('reference: ' + this.reference);
+
+		dateText.attr('x', nextX + 70)
+			.attr('y', nextY + 40)
+			.text('date: ' + this.date);
+
+		defendantText.attr('x', nextX + 70)
+			.attr('y', nextY + 60)
+			.text('defendant: ' + this.defendant);
+
+		prosecutorText.attr('x', nextX + 70)
+			.attr('y', nextY + 80)
+			.text('prosecutor: ' + this.prosecutor);
+
+		/*keywordsText.attr('x'. nextX + 70)
+			.attr('y', nextY + 100);*/
+
+		svgEl.append(referenceText)
+			.append(dateText)
+			.append(defendantText)
+			.append(prosecutorText)
+			//.append(keywordsText);
+
+		//keywordsText[0].textContent = 'keywords: ' + JSON.strinigify(this.keywords);
 	};
 
 	function showVisuals(data) {
@@ -100,6 +134,10 @@ $(document).ready(function() {
 		$('#visual').children().remove('*');
 
 		data.response.forEach(processCase);
+
+		nextY += 150;
+		nextX = 0; 
+
 		judges.forEach(renderJudgeNode);
 		courts.forEach(renderCourtNode);
 
@@ -113,70 +151,78 @@ $(document).ready(function() {
 		cases.push(caseObj);
 		renderCaseNode(caseObj);
 
-		if (courts.indexOf(caseObj.court_name) === -1) {
+		if (caseObj.court_name !== undefined && courts.indexOf(caseObj.court_name) === -1) {
 			courts.push(caseObj.court_name);
 		}
 
-		if (judges.indexOf(caseObj.judge) === -1) {
+		if (caseObj.judge !== undefined && judges.indexOf(caseObj.judge) === -1) {
 			judges.push(caseObj.judge);
 		}
 	}
 
 	function renderCaseNode(caseObj) {
 		var svgEl = $('#visual'),
-			circle = createSVGEl('circle'),
-			text = createSVGEl('text');
+			circle = createSVGEl('circle');
 
 		//Append circle
-		circle.attr('cx', nextX + 30);
-		circle.attr('cy', nextY + 30);
-		circle.attr('r', 20);
+		circle.attr('cx', nextX + 30)
+			.attr('cy', nextY + 30)
+			.attr('r', 20)
+			.attr('fill', 'yellow');
 		svgEl.append(circle);
 
 		//Append properties
-		text.attr('x', nextX + 60);
-		text.attr('y', nextY);
-		text.text(caseObj);
-		svgEl.append(text);
+		caseObj.attachTextNodes(svgEl);
 
-		nextX += 150;
-		if (nextX >= svgEl.attr('clientWidth')) {
-			nextY += 50;
-			nextX = 0;
-		}
+		progressPositions(svgEl);
+
+		caseObj.node = circle;
 	}
 
 	function renderRelatedNode(type, value) {
-		var comparator,
+		var lineColor,
 			svgEl = $('#visual'),
 			circle = createSVGEl('circle'),
 			text = createSVGEl('text');
 
-		circle.attr('cx', nextX);
-		circle.attr('cy', nextY);
-		svgEl.append(circle);
+		circle.attr('cx', nextX + 30)
+			.attr('cy', nextY + 30)
+			.attr('r', 20);
+
+		text.text(value)
+
+			.attr('x', nextX + 70)
+			.attr('y', nextY + 32);
 
 		if (type === 'judge') {
-			comparator = 'judge';
+			circle.attr('fill', 'red');
+			lineColor = 'purple';
 		} else if (type === 'court') {
-			comparator = 'court';
+			circle.attr('fill', 'green');
+			lineColor = 'blue';
 		}
 
+		svgEl.append(circle)
+			.append(text);
+
 		cases.forEach(function drawLine(caseObj) {
-			if (caseObj[comparator] === value) {
+			if (caseObj[type] === value) {
 				var line = createSVGEl('line');
 				
-				line.attr('x1', nextX);
-				line.attr('y1', nextY);
+				line.attr('x1', nextX + 30)
+					.attr('y1', nextY + 30)
 
-				line.attr('x2', caseObj.node.attr('cx'));
-				line.attr('y2', caseObj.node.attr('cy'));
+					.attr('x2', caseObj.node.attr('cx'))
+					.attr('y2', caseObj.node.attr('cy'))
 
-				line.attr('stroke-width', 2);
+					.attr('stroke-width', 2)
+					.attr('stroke', lineColor);
 
 				svgEl.append(line);
 			}
 		});
+
+		progressPositions(svgEl);
 	}
 
 	function renderJudgeNode(judge) {
@@ -187,11 +233,20 @@ $(document).ready(function() {
 		renderRelatedNode('court', court);
 	}
 
+	function progressPositions(svgEl) {
+		nextX += 400;
+		if (nextX > svgEl.attr('clientWidth')) {
+			nextY += 50;
+			nextX = 0;
+		}
+	}
+
 	//Element-creation util
 	//Kudos to Brian Birtles - birtles on IRC
 	function createSVGEl(tagName) {
 		return $(document.createElementNS('http://www.w3.org/2000/svg', tagName));
 	}
+
 
 	//UI handlers
 	$('.search-panel .dropdown-menu').find('a').click(processSelection);
