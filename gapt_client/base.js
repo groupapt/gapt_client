@@ -149,10 +149,10 @@ $(document).ready(function () {
 	function processCase(caseObj) {
 		var caseObj = new Case(caseObj);
 		cases.push(caseObj);
-		renderCaseNode(caseObj);console.log(caseObj.court_name);
+		renderCaseNode(caseObj);
 
-		if (caseObj.court_name !== undefined && courts.indexOf(caseObj.court_name) === -1) {
-			courts.push(caseObj.court_name);
+		if (caseObj.court !== undefined && courts.indexOf(caseObj.court) === -1) {
+			courts.push(caseObj.court);
 		}
 
 		if (caseObj.judge !== undefined && judges.indexOf(caseObj.judge) === -1) {
@@ -179,19 +179,19 @@ $(document).ready(function () {
 		caseObj.node = circle;
 	}
 
-	function renderRelatedNode(type, value) {
+	function renderRelatedNode(type, value, index) {
 		var lineColor,
 			svgEl = $('#visual'),
 			circle = createSVGEl('circle'),
 			text = createSVGEl('text');
 
-		circle.attr('cx', nextX + 30)
+		circle.attr('cx', nextX + 30*(index+2))
 			.attr('cy', nextY + 30)
 			.attr('r', 20);
 
 		text.text(value)
 
-			.attr('x', nextX + 70)
+			.attr('x', nextX + 70 + 30*(index+2))
 			.attr('y', nextY + 32);
 
 		if (type === 'judge') {
@@ -209,7 +209,7 @@ $(document).ready(function () {
 			if (caseObj[type] === value) {
 				var line = createSVGEl('line');
 				
-				line.attr('x1', nextX + 30)
+				line.attr('x1', nextX + 30*(index+2))
 					.attr('y1', nextY + 30)
 
 					.attr('x2', caseObj.node.attr('cx'))
@@ -225,12 +225,12 @@ $(document).ready(function () {
 		progressPositions(svgEl);
 	}
 
-	function renderJudgeNode(judge) {
-		renderRelatedNode('judge', judge);
+	function renderJudgeNode(judge, index) {
+		renderRelatedNode('judge', judge, index);
 	}
 
-	function renderCourtNode(court) {
-		renderRelatedNode('court', court);
+	function renderCourtNode(court, index) {
+		renderRelatedNode('court', court, index);
 	}
 
 	function progressPositions(svgEl) {
@@ -240,6 +240,7 @@ $(document).ready(function () {
 			nextX = 0;
 		}
 	}
+
 
 	//Element-creation util
 	//Kudos to Brian Birtles - birtles on IRC
